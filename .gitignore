@@ -1,15 +1,6 @@
-# Node modules
-node_modules/
-
-# Logs
-logs
+# Ignore only unnecessary files for deployment
+/
+logs/
 *.log
-
-# Serverless Framework .serverless folder
-.serverless/
-
-# OS files
 .DS_Store
-
-# Env files
 .env

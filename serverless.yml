@@ -1,15 +1,61 @@
-service: my-nodejs-serverless
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: surendra1152
+service: customer-service
+
+frameworkVersion: '>=3.0.0'
 
 provider:
   name: aws
   runtime: nodejs18.x
   region: ap-northeast-1
   stage: dev
+  environment:
+    DYNAMODB_TABLE: customers
+    
+plugins:
+  - serverless-esbuild
+  - serverless-offline
 
+    
 functions:
-  hello:
-    handler: src/handler.hello
+  createCustomer:
+    handler: src/customer/create.handler
     events:
       - http:
-          path: hello
-          method: get
+          path: customer
+          method: post
+
+  # getCustomer:
+  #   handler: src/customer/get.handler
+  #   events:
+  #     - http:
+  #         path: customer/{id}
+  #         method: get
+
+  # updateCustomer:
+  #   handler: src/customer/update.handler
+  #   events:
+  #     - http:
+  #         path: customer/{id}
+  #         method: put
+
+  # deleteCustomer:
+  #   handler: src/customer/delete.handler
+  #   events:
+  #     - http:
+  #         path: customer/{id}
+  #         method: delete
+
+resources:
+  Resources:
+    CustomersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: customers
+        AttributeDefinitions:
+          - AttributeName: customerId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: customerId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
