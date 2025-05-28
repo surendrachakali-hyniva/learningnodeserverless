@@ -1,0 +1,15 @@
+{
+  "name": "learningnodeserverless",
+  "version": "1.0.0",
+  "description": "learning node js serverless lambda dynamo db",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless": "^4.15.1"
+  }
+}
