@@ -1,0 +1,15 @@
+# Node modules
+node_modules/
+
+# Logs
+logs
+*.log
+
+# Serverless Framework .serverless folder
+.serverless/
+
+# OS files
+.DS_Store
+
+# Env files
+.env
