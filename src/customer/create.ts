@@ -13,7 +13,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     if (!data.name || !data.mobile || !data.city || !data.area || !data.zipcode) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: "Missing required fields" }),
+        body: JSON.stringify({ message: "Missing required fields are one" }),
       };
     }
 
@@ -36,6 +36,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         Item: item,
       })
     );
+    
 
     return {
       statusCode: 201,
