@@ -11,9 +11,8 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^22.15.23",
-    "serverless": "^4.15.1",
     "serverless-esbuild": "^1.55.0",
-    "serverless-offline": "^14.4.0",
+    "serverless-offline": "^8.8.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
