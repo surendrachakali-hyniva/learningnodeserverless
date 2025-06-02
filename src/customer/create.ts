@@ -55,7 +55,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       return {
         statusCode: 400,
         body: JSON.stringify({
-          message: 'Validation Failed',
+          message: 'Validation Failed for customer or addresses',
           missingFields,
         }),
       };

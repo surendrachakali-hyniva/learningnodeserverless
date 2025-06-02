@@ -134,6 +134,21 @@
                       "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/customer-order-service-dev*:*:*"
                     }
                   ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:PutItem",
+                    "dynamodb:Query",
+                    "dynamodb:Scan",
+                    "dynamodb:UpdateItem"
+                  ],
+                  "Resource": [
+                    "arn:aws:dynamodb:ap-northeast-1:722017363230:table/customers-dev",
+                    "arn:aws:dynamodb:ap-northeast-1:722017363230:table/addresses-dev",
+                    "arn:aws:dynamodb:ap-northeast-1:722017363230:table/orders-dev",
+                    "arn:aws:dynamodb:ap-northeast-1:722017363230:table/items-dev"
+                  ]
                 }
               ]
             }
@@ -162,7 +177,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/customer-order-service/dev/1748858582787-2025-06-02T10:03:02.787Z/customer-order-service.zip"
+          "S3Key": "serverless/customer-order-service/dev/1748867467824-2025-06-02T12:31:07.824Z/customer-order-service.zip"
         },
         "Handler": "src/customer/create.handler",
         "Runtime": "nodejs18.x",
@@ -271,7 +286,7 @@
         "CreateCustomerLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1748858577725": {
+    "ApiGatewayDeployment1748867460392": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
