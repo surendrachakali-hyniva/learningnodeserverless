@@ -74,7 +74,7 @@
     "CreateCustomerLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/customer-service-dev-createCustomer"
+        "LogGroupName": "/aws/lambda/customer-order-service-dev-createCustomer"
       }
     },
     "IamRoleLambdaExecution": {
@@ -102,7 +102,7 @@
               "Fn::Join": [
                 "-",
                 [
-                  "customer-service",
+                  "customer-order-service",
                   "dev",
                   "lambda"
                 ]
@@ -120,7 +120,7 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/customer-service-dev*:*"
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/customer-order-service-dev*:*"
                     }
                   ]
                 },
@@ -131,7 +131,7 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/customer-service-dev*:*:*"
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/customer-order-service-dev*:*:*"
                     }
                   ]
                 }
@@ -144,7 +144,7 @@
           "Fn::Join": [
             "-",
             [
-              "customer-service",
+              "customer-order-service",
               "dev",
               {
                 "Ref": "AWS::Region"
@@ -162,16 +162,19 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/customer-service/dev/1748607833398-2025-05-30T12:23:53.398Z/customer-service.zip"
+          "S3Key": "serverless/customer-order-service/dev/1748858582787-2025-06-02T10:03:02.787Z/customer-order-service.zip"
         },
         "Handler": "src/customer/create.handler",
         "Runtime": "nodejs18.x",
-        "FunctionName": "customer-service-dev-createCustomer",
+        "FunctionName": "customer-order-service-dev-createCustomer",
         "MemorySize": 1024,
         "Timeout": 6,
         "Environment": {
           "Variables": {
-            "DYNAMODB_TABLE": "customers"
+            "DYNAMODB_CUSTOMERS_TABLE": "customers-dev",
+            "DYNAMODB_ADDRESSES_TABLE": "addresses-dev",
+            "DYNAMODB_ORDERS_TABLE": "orders-dev",
+            "DYNAMODB_ITEMS_TABLE": "items-dev"
           }
         },
         "Role": {
@@ -185,20 +188,20 @@
         "CreateCustomerLogGroup"
       ]
     },
-    "CreateCustomerLambdaVersionr0fmLpE7wx5cn22JelP9ob9EdRQ3XiiAyERD5KtOQ": {
+    "CreateCustomerLambdaVersiontep667mYniSIVhwix6BrOqaZs0Vi2YNPXpJT59wQCk": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "CreateCustomerLambdaFunction"
         },
-        "CodeSha256": "Acw9G1Z836B6LZ/eccMFuhv4H3yQ1U71wRb1n7fH1HQ="
+        "CodeSha256": "IQ2YjaikwVOfpglI1VHL53sWQd5UAsNL26ZNHCDZV30="
       }
     },
     "ApiGatewayRestApi": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
-        "Name": "dev-customer-service",
+        "Name": "dev-customer-order-service",
         "EndpointConfiguration": {
           "Types": [
             "EDGE"
@@ -207,7 +210,7 @@
         "Policy": ""
       }
     },
-    "ApiGatewayResourceCustomer1": {
+    "ApiGatewayResourceCustomers": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
@@ -216,19 +219,19 @@
             "RootResourceId"
           ]
         },
-        "PathPart": "customer1",
+        "PathPart": "customers",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayMethodCustomer1Post": {
+    "ApiGatewayMethodCustomersPost": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "POST",
         "RequestParameters": {},
         "ResourceId": {
-          "Ref": "ApiGatewayResourceCustomer1"
+          "Ref": "ApiGatewayResourceCustomers"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -268,7 +271,7 @@
         "CreateCustomerLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1748607826595": {
+    "ApiGatewayDeployment1748858577725": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -277,7 +280,7 @@
         "StageName": "dev"
       },
       "DependsOn": [
-        "ApiGatewayMethodCustomer1Post"
+        "ApiGatewayMethodCustomersPost"
       ]
     },
     "CreateCustomerLambdaPermissionApiGateway": {
@@ -320,7 +323,7 @@
     "CustomersTable": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
-        "TableName": "customers",
+        "TableName": "customers-dev",
         "AttributeDefinitions": [
           {
             "AttributeName": "customerId",
@@ -335,6 +338,79 @@
         ],
         "BillingMode": "PAY_PER_REQUEST"
       }
+    },
+    "AddressesTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "addresses-dev",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "addressId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "customerId",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "addressId",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "customerId",
+            "KeyType": "RANGE"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST"
+      }
+    },
+    "OrdersTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "orders-dev",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "orderId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "customerId",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "orderId",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "customerId",
+            "KeyType": "RANGE"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST"
+      }
+    },
+    "ItemsTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "items-dev",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "itemId",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "itemId",
+            "KeyType": "HASH"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST"
+      }
     }
   },
   "Outputs": {
@@ -343,16 +419,16 @@
         "Ref": "ServerlessDeploymentBucket"
       },
       "Export": {
-        "Name": "sls-customer-service-dev-ServerlessDeploymentBucketName"
+        "Name": "sls-customer-order-service-dev-ServerlessDeploymentBucketName"
       }
     },
     "CreateCustomerLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "CreateCustomerLambdaVersionr0fmLpE7wx5cn22JelP9ob9EdRQ3XiiAyERD5KtOQ"
+        "Ref": "CreateCustomerLambdaVersiontep667mYniSIVhwix6BrOqaZs0Vi2YNPXpJT59wQCk"
       },
       "Export": {
-        "Name": "sls-customer-service-dev-CreateCustomerLambdaFunctionQualifiedArn"
+        "Name": "sls-customer-order-service-dev-CreateCustomerLambdaFunctionQualifiedArn"
       }
     },
     "ServiceEndpoint": {
@@ -378,7 +454,7 @@
         ]
       },
       "Export": {
-        "Name": "sls-customer-service-dev-ServiceEndpoint"
+        "Name": "sls-customer-order-service-dev-ServiceEndpoint"
       }
     }
   }

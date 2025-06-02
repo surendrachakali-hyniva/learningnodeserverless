@@ -1,5 +1,4 @@
-# "org" ensures this Service is used with the correct Serverless Framework Access Key.
-org: surendra1152
+org: hyniva123
 service: customer-order-service
 
 frameworkVersion: '>=3.0.0'
@@ -10,17 +9,16 @@ provider:
   region: ap-northeast-1
   stage: dev
   environment:
-    DYNAMODB_CUSTOMERS_TABLE: customers
-    DYNAMODB_ADDRESSES_TABLE: addresses
-    DYNAMODB_ORDERS_TABLE: orders
-    DYNAMODB_ITEMS_TABLE: items
+    DYNAMODB_CUSTOMERS_TABLE: customers-${self:provider.stage}
+    DYNAMODB_ADDRESSES_TABLE: addresses-${self:provider.stage}
+    DYNAMODB_ORDERS_TABLE: orders-${self:provider.stage}
+    DYNAMODB_ITEMS_TABLE: items-${self:provider.stage}
 
 plugins:
   - serverless-esbuild
   - serverless-offline
 
 functions:
-  # Customer Functions
   createCustomer:
     handler: src/customer/create.handler
     events:
@@ -28,85 +26,12 @@ functions:
           path: customers
           method: post
 
-  # getCustomer:
-  #   handler: src/customer/get.handler
-  #   events:
-  #     - http:
-  #         path: customers/{customerId}
-  #         method: get
-
-  # updateCustomer:
-  #   handler: src/customer/update.handler
-  #   events:
-  #     - http:
-  #         path: customers/{customerId}
-  #         method: put
-
-  # deleteCustomer:
-  #   handler: src/customer/delete.handler
-  #   events:
-  #     - http:
-  #         path: customers/{customerId}
-  #         method: delete
-
-  # # Address Functions
-  # createAddress:
-  #   handler: src/address/create.handler
-  #   events:
-  #     - http:
-  #         path: addresses
-  #         method: post
-
-  # getAddress:
-  #   handler: src/address/get.handler
-  #   events:
-  #     - http:
-  #         path: addresses/{addressId}
-  #         method: get
-
-  # getAddressByCustomer:
-  #   handler: src/address/getByCustomer.handler
-  #   events:
-  #     - http:
-  #         path: addresses/customer/{customerId}
-  #         method: get
-
-  # # Order Functions
-  # createOrder:
-  #   handler: src/order/create.handler
-  #   events:
-  #     - http:
-  #         path: orders
-  #         method: post
-
-  # getOrder:
-  #   handler: src/order/get.handler
-  #   events:
-  #     - http:
-  #         path: orders/{orderId}
-  #         method: get
-
-  # # Item Functions
-  # createItem:
-  #   handler: src/item/create.handler
-  #   events:
-  #     - http:
-  #         path: items
-  #         method: post
-
-  # getItem:
-  #   handler: src/item/get.handler
-  #   events:
-  #     - http:
-  #         path: items/{itemId}
-  #         method: get
-
 resources:
   Resources:
     CustomersTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: customers
+        TableName: customers-${self:provider.stage}
         AttributeDefinitions:
           - AttributeName: customerId
             AttributeType: S
@@ -118,7 +43,7 @@ resources:
     AddressesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: addresses
+        TableName: addresses-${self:provider.stage}
         AttributeDefinitions:
           - AttributeName: addressId
             AttributeType: S
@@ -134,7 +59,7 @@ resources:
     OrdersTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: orders
+        TableName: orders-${self:provider.stage}
         AttributeDefinitions:
           - AttributeName: orderId
             AttributeType: S
@@ -150,7 +75,7 @@ resources:
     ItemsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: items
+        TableName: items-${self:provider.stage}
         AttributeDefinitions:
           - AttributeName: itemId
             AttributeType: S
@@ -158,3 +83,168 @@ resources:
           - AttributeName: itemId
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
+
+
+
+
+
+# # "org" ensures this Service is used with the correct Serverless Framework Access Key.
+# org: hyniva123
+# service: customer-order-service
+
+# frameworkVersion: '>=3.0.0'
+
+# provider:
+#   name: aws
+#   runtime: nodejs18.x
+#   region: ap-northeast-1
+#   stage: dev
+#   environment:
+#     DYNAMODB_CUSTOMERS_TABLE: customers
+#     DYNAMODB_ADDRESSES_TABLE: addresses
+#     DYNAMODB_ORDERS_TABLE: orders
+#     DYNAMODB_ITEMS_TABLE: items
+
+# plugins:
+#   - serverless-esbuild
+#   - serverless-offline
+
+# functions:
+#   # Customer Functions
+#   createCustomer:
+#     handler: src/customer/create.handler
+#     events:
+#       - http:
+#           path: customers
+#           method: post
+
+#   # getCustomer:
+#   #   handler: src/customer/get.handler
+#   #   events:
+#   #     - http:
+#   #         path: customers/{customerId}
+#   #         method: get
+
+#   # updateCustomer:
+#   #   handler: src/customer/update.handler
+#   #   events:
+#   #     - http:
+#   #         path: customers/{customerId}
+#   #         method: put
+
+#   # deleteCustomer:
+#   #   handler: src/customer/delete.handler
+#   #   events:
+#   #     - http:
+#   #         path: customers/{customerId}
+#   #         method: delete
+
+#   # # Address Functions
+#   # createAddress:
+#   #   handler: src/address/create.handler
+#   #   events:
+#   #     - http:
+#   #         path: addresses
+#   #         method: post
+
+#   # getAddress:
+#   #   handler: src/address/get.handler
+#   #   events:
+#   #     - http:
+#   #         path: addresses/{addressId}
+#   #         method: get
+
+#   # getAddressByCustomer:
+#   #   handler: src/address/getByCustomer.handler
+#   #   events:
+#   #     - http:
+#   #         path: addresses/customer/{customerId}
+#   #         method: get
+
+#   # # Order Functions
+#   # createOrder:
+#   #   handler: src/order/create.handler
+#   #   events:
+#   #     - http:
+#   #         path: orders
+#   #         method: post
+
+#   # getOrder:
+#   #   handler: src/order/get.handler
+#   #   events:
+#   #     - http:
+#   #         path: orders/{orderId}
+#   #         method: get
+
+#   # # Item Functions
+#   # createItem:
+#   #   handler: src/item/create.handler
+#   #   events:
+#   #     - http:
+#   #         path: items
+#   #         method: post
+
+#   # getItem:
+#   #   handler: src/item/get.handler
+#   #   events:
+#   #     - http:
+#   #         path: items/{itemId}
+#   #         method: get
+
+# resources:
+#   Resources:
+#     CustomersTable:
+#       Type: AWS::DynamoDB::Table
+#       Properties:
+#         TableName: customers
+#         AttributeDefinitions:
+#           - AttributeName: customerId
+#             AttributeType: S
+#         KeySchema:
+#           - AttributeName: customerId
+#             KeyType: HASH
+#         BillingMode: PAY_PER_REQUEST
+
+#     AddressesTable:
+#       Type: AWS::DynamoDB::Table
+#       Properties:
+#         TableName: addresses
+#         AttributeDefinitions:
+#           - AttributeName: addressId
+#             AttributeType: S
+#           - AttributeName: customerId
+#             AttributeType: S
+#         KeySchema:
+#           - AttributeName: addressId
+#             KeyType: HASH
+#           - AttributeName: customerId
+#             KeyType: RANGE
+#         BillingMode: PAY_PER_REQUEST
+
+#     OrdersTable:
+#       Type: AWS::DynamoDB::Table
+#       Properties:
+#         TableName: orders
+#         AttributeDefinitions:
+#           - AttributeName: orderId
+#             AttributeType: S
+#           - AttributeName: customerId
+#             AttributeType: S
+#         KeySchema:
+#           - AttributeName: orderId
+#             KeyType: HASH
+#           - AttributeName: customerId
+#             KeyType: RANGE
+#         BillingMode: PAY_PER_REQUEST
+
+#     ItemsTable:
+#       Type: AWS::DynamoDB::Table
+#       Properties:
+#         TableName: items
+#         AttributeDefinitions:
+#           - AttributeName: itemId
+#             AttributeType: S
+#         KeySchema:
+#           - AttributeName: itemId
+#             KeyType: HASH
+#         BillingMode: PAY_PER_REQUEST
