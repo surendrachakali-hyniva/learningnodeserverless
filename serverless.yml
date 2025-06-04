@@ -1,7 +1,7 @@
 org: hyniva123
 service: customer-order-service
 
-frameworkVersion: '>=3.0.0'
+frameworkVersion: ">=3.0.0"
 
 provider:
   name: aws
@@ -39,6 +39,32 @@ functions:
       - http:
           path: customers
           method: post
+  getCustomer:
+    handler: src/customer/get.handler
+    events:
+      - http:
+          path: customers/{customerId}
+          method: get
+          request:
+            parameters:
+              paths:
+                customerId: true
+  getAllCustomer:
+    handler: src/customer/getAll.handler
+    events:
+      - http:
+          path: customers/all
+          method: get
+  updateCustomer:
+    handler: src/customer/update.handler
+    events:
+      - http:
+          path: customers/{customerId}
+          method: put
+          request:
+            parameters:
+              paths:
+                customerId: true
 
 resources:
   Resources:
@@ -97,11 +123,6 @@ resources:
           - AttributeName: itemId
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
-
-
-
-
-
 # # "org" ensures this Service is used with the correct Serverless Framework Access Key.
 # org: hyniva123
 # service: customer-order-service

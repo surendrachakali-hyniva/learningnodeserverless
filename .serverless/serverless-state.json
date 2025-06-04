@@ -112,6 +112,24 @@
               "LogGroupName": "/aws/lambda/customer-order-service-dev-createCustomer"
             }
           },
+          "GetCustomerLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/customer-order-service-dev-getCustomer"
+            }
+          },
+          "GetAllCustomerLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/customer-order-service-dev-getAllCustomer"
+            }
+          },
+          "UpdateCustomerLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/customer-order-service-dev-updateCustomer"
+            }
+          },
           "IamRoleLambdaExecution": {
             "Type": "AWS::IAM::Role",
             "Properties": {
@@ -200,7 +218,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/customer-order-service/dev/1748867467824-2025-06-02T12:31:07.824Z/customer-order-service.zip"
+                "S3Key": "serverless/customer-order-service/dev/1749022345595-2025-06-04T07:32:25.595Z/customer-order-service.zip"
               },
               "Handler": "src/customer/create.handler",
               "Runtime": "nodejs18.x",
@@ -226,14 +244,143 @@
               "CreateCustomerLogGroup"
             ]
           },
-          "CreateCustomerLambdaVersiontep667mYniSIVhwix6BrOqaZs0Vi2YNPXpJT59wQCk": {
+          "GetCustomerLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/customer-order-service/dev/1749022345595-2025-06-04T07:32:25.595Z/customer-order-service.zip"
+              },
+              "Handler": "src/customer/get.handler",
+              "Runtime": "nodejs18.x",
+              "FunctionName": "customer-order-service-dev-getCustomer",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "DYNAMODB_CUSTOMERS_TABLE": "customers-dev",
+                  "DYNAMODB_ADDRESSES_TABLE": "addresses-dev",
+                  "DYNAMODB_ORDERS_TABLE": "orders-dev",
+                  "DYNAMODB_ITEMS_TABLE": "items-dev"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "GetCustomerLogGroup"
+            ]
+          },
+          "GetAllCustomerLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/customer-order-service/dev/1749022345595-2025-06-04T07:32:25.595Z/customer-order-service.zip"
+              },
+              "Handler": "src/customer/getAll.handler",
+              "Runtime": "nodejs18.x",
+              "FunctionName": "customer-order-service-dev-getAllCustomer",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "DYNAMODB_CUSTOMERS_TABLE": "customers-dev",
+                  "DYNAMODB_ADDRESSES_TABLE": "addresses-dev",
+                  "DYNAMODB_ORDERS_TABLE": "orders-dev",
+                  "DYNAMODB_ITEMS_TABLE": "items-dev"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "GetAllCustomerLogGroup"
+            ]
+          },
+          "UpdateCustomerLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/customer-order-service/dev/1749022345595-2025-06-04T07:32:25.595Z/customer-order-service.zip"
+              },
+              "Handler": "src/customer/update.handler",
+              "Runtime": "nodejs18.x",
+              "FunctionName": "customer-order-service-dev-updateCustomer",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "DYNAMODB_CUSTOMERS_TABLE": "customers-dev",
+                  "DYNAMODB_ADDRESSES_TABLE": "addresses-dev",
+                  "DYNAMODB_ORDERS_TABLE": "orders-dev",
+                  "DYNAMODB_ITEMS_TABLE": "items-dev"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "UpdateCustomerLogGroup"
+            ]
+          },
+          "CreateCustomerLambdaVersion0FJnIVuxHUB0GjgD6O0K3E3gtTCrSMzgE8jYfPQv3MM": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "CreateCustomerLambdaFunction"
               },
-              "CodeSha256": "IQ2YjaikwVOfpglI1VHL53sWQd5UAsNL26ZNHCDZV30="
+              "CodeSha256": "mzBtlBpd5DlL8pG0oYgcAvShFKnJL2D6uk2AbxDQ3NQ="
+            }
+          },
+          "GetCustomerLambdaVersionSWpURQrrCkDr14GzffbH4muFJnipl7V72FxHe9Kw": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "GetCustomerLambdaFunction"
+              },
+              "CodeSha256": "mzBtlBpd5DlL8pG0oYgcAvShFKnJL2D6uk2AbxDQ3NQ="
+            }
+          },
+          "GetAllCustomerLambdaVersionBbDmh4rL7IOlqNzwgPLUdGSjzxpK0U2iwvKQ7U": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "GetAllCustomerLambdaFunction"
+              },
+              "CodeSha256": "mzBtlBpd5DlL8pG0oYgcAvShFKnJL2D6uk2AbxDQ3NQ="
+            }
+          },
+          "UpdateCustomerLambdaVersionKK8txdPPEbuK5ry3f7CZt9vXaW3n8GinBIimxwK3jk": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "UpdateCustomerLambdaFunction"
+              },
+              "CodeSha256": "mzBtlBpd5DlL8pG0oYgcAvShFKnJL2D6uk2AbxDQ3NQ="
             }
           },
           "ApiGatewayRestApi": {
@@ -258,6 +405,30 @@
                 ]
               },
               "PathPart": "customers",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceCustomersCustomeridVar": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceCustomers"
+              },
+              "PathPart": "{customerId}",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceCustomersAll": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceCustomers"
+              },
+              "PathPart": "all",
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
@@ -309,7 +480,166 @@
               "CreateCustomerLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1748867460392": {
+          "ApiGatewayMethodCustomersCustomeridVarGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {
+                "method.request.path.customerId": true
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceCustomersCustomeridVar"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "GetCustomerLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": [],
+              "RequestValidatorId": {
+                "Ref": "ApiGatewayCustomerorderserviceRequestValidator"
+              }
+            },
+            "DependsOn": [
+              "GetCustomerLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodCustomersAllGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceCustomersAll"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "GetAllCustomerLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "GetAllCustomerLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodCustomersCustomeridVarPut": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "PUT",
+              "RequestParameters": {
+                "method.request.path.customerId": true
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceCustomersCustomeridVar"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "UpdateCustomerLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": [],
+              "RequestValidatorId": {
+                "Ref": "ApiGatewayCustomerorderserviceRequestValidator"
+              }
+            },
+            "DependsOn": [
+              "UpdateCustomerLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayCustomerorderserviceRequestValidator": {
+            "Type": "AWS::ApiGateway::RequestValidator",
+            "Properties": {
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ValidateRequestBody": true,
+              "ValidateRequestParameters": true,
+              "Name": "customer-order-service-dev | Validate request body and querystring parameters"
+            }
+          },
+          "ApiGatewayDeployment1749022338607": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -318,7 +648,10 @@
               "StageName": "dev"
             },
             "DependsOn": [
-              "ApiGatewayMethodCustomersPost"
+              "ApiGatewayMethodCustomersPost",
+              "ApiGatewayMethodCustomersCustomeridVarGet",
+              "ApiGatewayMethodCustomersAllGet",
+              "ApiGatewayMethodCustomersCustomeridVarPut"
             ]
           },
           "CreateCustomerLambdaPermissionApiGateway": {
@@ -327,6 +660,117 @@
               "FunctionName": {
                 "Fn::GetAtt": [
                   "CreateCustomerLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "GetCustomerLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "GetCustomerLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "GetAllCustomerLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "GetAllCustomerLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "UpdateCustomerLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "UpdateCustomerLambdaFunction",
                   "Arn"
                 ]
               },
@@ -463,10 +907,37 @@
           "CreateCustomerLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "CreateCustomerLambdaVersiontep667mYniSIVhwix6BrOqaZs0Vi2YNPXpJT59wQCk"
+              "Ref": "CreateCustomerLambdaVersion0FJnIVuxHUB0GjgD6O0K3E3gtTCrSMzgE8jYfPQv3MM"
             },
             "Export": {
               "Name": "sls-customer-order-service-dev-CreateCustomerLambdaFunctionQualifiedArn"
+            }
+          },
+          "GetCustomerLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "GetCustomerLambdaVersionSWpURQrrCkDr14GzffbH4muFJnipl7V72FxHe9Kw"
+            },
+            "Export": {
+              "Name": "sls-customer-order-service-dev-GetCustomerLambdaFunctionQualifiedArn"
+            }
+          },
+          "GetAllCustomerLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "GetAllCustomerLambdaVersionBbDmh4rL7IOlqNzwgPLUdGSjzxpK0U2iwvKQ7U"
+            },
+            "Export": {
+              "Name": "sls-customer-order-service-dev-GetAllCustomerLambdaFunctionQualifiedArn"
+            }
+          },
+          "UpdateCustomerLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "UpdateCustomerLambdaVersionKK8txdPPEbuK5ry3f7CZt9vXaW3n8GinBIimxwK3jk"
+            },
+            "Export": {
+              "Name": "sls-customer-order-service-dev-UpdateCustomerLambdaFunctionQualifiedArn"
             }
           },
           "ServiceEndpoint": {
@@ -604,7 +1075,74 @@
         "timeout": 6,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "CreateCustomerLambdaVersiontep667mYniSIVhwix6BrOqaZs0Vi2YNPXpJT59wQCk"
+        "versionLogicalId": "CreateCustomerLambdaVersion0FJnIVuxHUB0GjgD6O0K3E3gtTCrSMzgE8jYfPQv3MM"
+      },
+      "getCustomer": {
+        "handler": "src/customer/get.handler",
+        "events": [
+          {
+            "http": {
+              "path": "customers/{customerId}",
+              "method": "get",
+              "request": {
+                "parameters": {
+                  "method.request.path.customerId": true
+                }
+              },
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "customer-order-service-dev-getCustomer",
+        "package": {},
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs18.x",
+        "vpc": {},
+        "versionLogicalId": "GetCustomerLambdaVersionSWpURQrrCkDr14GzffbH4muFJnipl7V72FxHe9Kw"
+      },
+      "getAllCustomer": {
+        "handler": "src/customer/getAll.handler",
+        "events": [
+          {
+            "http": {
+              "path": "customers/all",
+              "method": "get",
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "customer-order-service-dev-getAllCustomer",
+        "package": {},
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs18.x",
+        "vpc": {},
+        "versionLogicalId": "GetAllCustomerLambdaVersionBbDmh4rL7IOlqNzwgPLUdGSjzxpK0U2iwvKQ7U"
+      },
+      "updateCustomer": {
+        "handler": "src/customer/update.handler",
+        "events": [
+          {
+            "http": {
+              "path": "customers/{customerId}",
+              "method": "put",
+              "request": {
+                "parameters": {
+                  "method.request.path.customerId": true
+                }
+              },
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "customer-order-service-dev-updateCustomer",
+        "package": {},
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs18.x",
+        "vpc": {},
+        "versionLogicalId": "UpdateCustomerLambdaVersionKK8txdPPEbuK5ry3f7CZt9vXaW3n8GinBIimxwK3jk"
       }
     },
     "resources": {
@@ -729,7 +1267,7 @@
     "isDashboardAppPreconfigured": false
   },
   "package": {
-    "artifactDirectoryName": "serverless/customer-order-service/dev/1748867467824-2025-06-02T12:31:07.824Z",
+    "artifactDirectoryName": "serverless/customer-order-service/dev/1749022345595-2025-06-04T07:32:25.595Z",
     "artifact": "customer-order-service.zip"
   }
 }

@@ -63,9 +63,8 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
     const customerId = uuidv4();
 
-    // Put customer
     const customerCommand = new PutItemCommand({
-      TableName: 'Customers',
+      TableName: process.env.DYNAMODB_CUSTOMERS_TABLE!,
       Item: {
         customerId: { S: customerId },
         name: { S: body.name },
@@ -76,12 +75,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
     await client.send(customerCommand);
 
-    // Put each address
     for (const addr of body.addresses) {
       const addressId = uuidv4();
 
       const addressCommand = new PutItemCommand({
-        TableName: 'Addresses',
+        TableName: process.env.DYNAMODB_ADDRESSES_TABLE!,
         Item: {
           addressId: { S: addressId },
           customerId: { S: customerId },
